@@ -1,0 +1,30 @@
+.circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-image:linear-gradient(to right,red,yellow)
+}
+
+.artical {
+    color: blue;
+}
+
+.img-box1 {
+    display: flex;
+    width: 150px;
+    height: 100px;
+    font-size: 25px;
+    color: red;
+    background: url("../images/windows.png") no-repeat center;
+    background-size: 100%;
+
+}
+.img-box2 {
+    display: flex;
+    width: 150px;
+    height: 100px;
+    font-size: 25px;
+    color: red;
+    background: url("../images/77kb.jpg") no-repeat center;
+    background-size: 100%;
+}

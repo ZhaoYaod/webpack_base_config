@@ -45,7 +45,7 @@ module.exports = {
     devServer: {
         port: 9000,
         open: true,
-        hot: false
+        hot: true
     },
     module: {
         rules: [
@@ -55,18 +55,18 @@ module.exports = {
                 use: [
                     // 'style-loader',
                     {
-                      loader: MiniCssExtractPlugin.loader
+                      loader: MiniCssExtractPlugin.loader   // 抽离css为单独文件
                     },
                     'css-loader',
                     {
-                        loader: 'postcss-loader',
-                        options: {
-                            ident: 'postcss',
-                            plugins: [
-                                // postcss插件
-                                PostcssPresetEnv()
-                            ]
-                        }
+                        loader: 'postcss-loader',           // css兼容性处理，添加浏览器前缀, 此loader在webpack@4中只能用4版本
+                        // options:{
+                        //     postcssOptions: {
+                        //         plugins: [
+                        //             PostcssPresetEnv()
+                        //           ] 
+                        //     }
+                        //   }
                     }
                 ]
             },
@@ -78,14 +78,14 @@ module.exports = {
                     MiniCssExtractPlugin.loader,
                     'css-loader',
                     {
-                        loader: 'postcss-loader',
-                        options: {
-                            ident: 'postcss',
-                            plugins: [
-                                // postcss插件
-                                PostcssPresetEnv()
-                            ]
-                        }
+                        loader: 'postcss-loader',           // css兼容性处理，添加浏览器前缀, 此loader在webpack@4中只能用4版本
+                        // options:{
+                        //     postcssOptions: {
+                        //         plugins: [
+                        //             PostcssPresetEnv()
+                        //           ] 
+                        //     }
+                        //   }
                     },
                     {
                         loader: 'less-loader'
@@ -98,7 +98,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     esModule: false,
-                    limit: 30 * 1024,
+                    limit: 1 * 1024,          
                     name: '[hash:8].[ext]',    // 名称只取前八位，扩展名取原文件扩展名
                     publicPath: '../images',
                     outputPath: 'images'
@@ -115,14 +115,17 @@ module.exports = {
             {
                 test: /\.js/,
                 include: path.resolve(__dirname, 'src'),
-                use: {
-                    loader: 'babel-loader',
-                    options: {  // 用babel-loader 把es6 -->es5
-                        presets: [
-                            '@babel/preset-env'
-                        ]
+                use: [
+                    'thread-loader',
+                    {
+                        loader: 'babel-loader',
+                        options: {  // 用babel-loader 把es6 -->es5
+                            presets: [
+                                '@babel/preset-env'
+                            ]
+                        }
                     }
-                }
+                ]
             },
         ]
     },
@@ -149,7 +152,7 @@ module.exports = {
         new MiniCssExtractPlugin({          // 抽离css为单独文件
             filename: 'css/index.css'       // 不设置默认就是根路径下main.css
         }),
-        new OptimizeCssAssetsWebpackPlugin(), // 压缩css
+        // new OptimizeCssAssetsWebpackPlugin(), // 压缩css
         // new PurgecssWebpackPlugin({
         //     paths: globAll.sync([
         //         path.join(__dirname, './src/index.html'),
@@ -161,11 +164,12 @@ module.exports = {
             analyzerMode: 'disabled', // 不启动展示打包报告的http服务
             generateStatsFile: true, // 生成stats.json文件
         }),
-        new webpack.DefinePlugin({
+        new webpack.DefinePlugin({  // 定义全局变量
             EXPRESSION: "1+1",
             BOOLEAN: "true",
             URL: JSON.stringify('www.fengzhen8023.com')
-        })
+        }),
+        new webpack.HotModuleReplacementPlugin()    // 热跟新插件
     ],
     devtool: 'source-map'
 }

@@ -10,5 +10,9 @@ let res = foo(100, 8)
 console.log(add(n1, n2))
 console.log('res:',res)
 console.log('EXPRESSION', EXPRESSION)
-console.log('BOOLEAN', BOOLEAN)
-console.log('URL', URL)
+console.log('BOOLEAN1', BOOLEAN)
+console.log('URL235', URL)
+// 配置HMR
+// if (module.hot) {
+//     module.hot.accept(["./assets/index.js"]);
+// }
